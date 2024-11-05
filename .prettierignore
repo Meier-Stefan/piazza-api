@@ -1,0 +1,1 @@
+# Everything from .gitignore is included already. This file and the prettierrc dotfile are here as recommended in the docs of prettier. It helps some programs to see that prettier is used here.
