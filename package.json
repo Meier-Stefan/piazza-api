@@ -1,0 +1,9 @@
+{
+  "name": "coursework",
+  "version": "1.0.0",
+  "description": "Piazza API (social media example)",
+  "main": "app.js",
+  "repository": "git@github.com:Meier-Stefan/piazza-api.git",
+  "author": "Stefan Meier",
+  "license": "MIT"
+}
