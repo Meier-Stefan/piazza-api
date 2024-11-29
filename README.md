@@ -21,3 +21,7 @@ All the logic is in the `App` directory. This helps to create a more maintainabl
 The routes forward the request to their corresponding controllers, which will then send the response. This is a good practise shown in the [Mozilla Express Tutorial](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/routes#overview)
 Adding the `App` directory as 'imports' alias in the `package.json`, makes it easy to import functions from the right place.
 ![app directory structure](pictures/AppDirectoryStructure.svg)
+
+### Infrastructure Setup Description
+
+The app is containerized as described in [the docker docs](https://docs.docker.com/get-started/workshop/02_our_app/). The only thing that needs to be adjusted is on line 7: the app.js sits in the root directory and is not called index.js.
