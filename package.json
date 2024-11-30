@@ -11,7 +11,7 @@
         "#*": "./App/*"
     },
     "scripts": {
-        "start": "nodemon app.js"
+        "dev": "NODE_ENV=development.local nodemon app.js"
     },
     "dependencies": {
         "dotenv": "16.4.5",
