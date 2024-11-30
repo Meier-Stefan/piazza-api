@@ -5,6 +5,11 @@
 A RESTful social media SaaS called Piazza. In Piazza, users post messages for a particular topic while others browse posts and perform basic interactions, including liking, disliking, or adding a comment.
 This is a courswork project for the Cloud Computing module at Birkbeck, University of London.
 
+### Getting started
+
+Install node and yarn or npm on your computer.
+Create a .env file and populate it with the database connector string that you can retrieve from mongodb.
+
 ## Setup
 
 ### Development Setup
@@ -14,6 +19,8 @@ The project uses yarn as package manager, prettier as linter and nodemon to run 
 ### Project Setup
 
 The Api is a Node.js application that uses the Express framework. The docker container that will be deployed to the virtual server in the cloud will have Node installed. This means Node will run the app on the virual server. During development, however, Nodemon is used, hence it is a developent dependency.
+
+## Phase A
 
 ### App Directory Structure
 
@@ -47,3 +54,10 @@ Once the container was up and running, the endpoints were available under the vi
 ![Topic detail endpoint availabe under the virtual machine IP address](pictures/TopicDetailDeployedContainer.png)
 ![Topic list endpoint availabe under the virtual machine IP address](pictures/TopicListDeployedContainer.png)
 ![User profile endpoint availabe under the virtual machine IP address](pictures/UserProfileDeployedContainer.png)
+
+## Phase B
+
+### Connecting to the database
+
+To start the development server, the node environment is specified in the 'dev' script in the package.json file. So the app knows from which .env dotfile to take the environment variables.
+The main function currently only connects to the database using the `connect` function from mongoose and console logs when it started and if it worked.
