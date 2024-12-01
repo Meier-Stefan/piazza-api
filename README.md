@@ -5,6 +5,11 @@
 A RESTful social media SaaS called Piazza. In Piazza, users post messages for a particular topic while others browse posts and perform basic interactions, including liking, disliking, or adding a comment.
 This is a courswork project for the Cloud Computing module at Birkbeck, University of London.
 
+### Getting started
+
+Install node and yarn or npm on your computer.
+Create a .env file and populate it with the database connector string that you can retrieve from mongodb.
+
 ## Setup
 
 ### Development Setup
@@ -14,6 +19,8 @@ The project uses yarn as package manager, prettier as linter and nodemon to run 
 ### Project Setup
 
 The Api is a Node.js application that uses the Express framework. The docker container that will be deployed to the virtual server in the cloud will have Node installed. This means Node will run the app on the virual server. During development, however, Nodemon is used, hence it is a developent dependency.
+
+## Phase A
 
 ### App Directory Structure
 
@@ -47,3 +54,32 @@ Once the container was up and running, the endpoints were available under the vi
 ![Topic detail endpoint availabe under the virtual machine IP address](pictures/TopicDetailDeployedContainer.png)
 ![Topic list endpoint availabe under the virtual machine IP address](pictures/TopicListDeployedContainer.png)
 ![User profile endpoint availabe under the virtual machine IP address](pictures/UserProfileDeployedContainer.png)
+
+## Phase B
+
+### Connecting to the database
+
+To start the development server, the node environment is specified in the 'dev' script in the package.json file. So the app knows from which .env dotfile to take the environment variables.
+The main function currently only connects to the database using the `connect` function from mongoose and console logs when it started and if it worked.
+
+### Register a user
+
+When a user posts to the `user/register` endpoint, route will forward to the corresponding controller. That controller uses a validation funciton to make sure that the input makes sense and is secure. The validation function is built with the `string, required, min, max` and `email` functions from the `joi` library.
+
+> **IDEA:** For this purpose, the funcitons were used in a simple way, but the [joi api reference](https://joi.dev/api/?v=17.13.3#stringemailoptions) documents ways how this could be improved.
+
+Using the `bcryptjs` library, the password is hashed and 5 rounds of salt are used before it gets stored in the database.
+
+### Login as user
+
+When a user posts to the `user/login` endpoint, there is, additional to the validation with `joi`, the password gets compared with a function from `bycryptjs` and, if the password matches, the response contains a json web token, that can later be used to access resources that require authentication.
+
+The `jsonwebtoken` library creates that token using a secret variable from the .env dotfile.
+
+> **SPECIAL:** The json web token expires after one hour and contains the [user ID as payload](https://www.npmjs.com/package/jsonwebtoken). This user Id can for example be used by the controllers to make sure that one user does not modify the profile of another user.
+
+> **IDEA:** It would be useful, if the token would refresh.
+
+### Interact with an endpoint that requires authentication
+
+To keep the repository clean and organised, a middleware folder is used like suggested by [this turorial.](https://dev.to/taiwo17/nodejs-authentication-and-authorization-with-jwt-building-a-secure-web-application-236f#set-up-file-structure) The routes that require use the `isAuthenticated` middleware funciton to make sure that the user is logged in and allowed to proceed. Logged in means that the request headers contain a key value pair of a key containing `auth-token` and a value containing the json web token.If the user is not logged in, or has a wrong json web token, `isAuthenticated` will send the corresponding response instead of letting the route forwarding the request to the controller.

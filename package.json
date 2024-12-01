@@ -11,10 +11,15 @@
         "#*": "./App/*"
     },
     "scripts": {
-        "start": "nodemon app.js"
+        "dev": "NODE_ENV=development.local nodemon app.js"
     },
     "dependencies": {
-        "express": "4.21.1"
+        "bcryptjs": "2.4.3",
+        "dotenv": "16.4.5",
+        "express": "4.21.1",
+        "joi": "17.13.3",
+        "jsonwebtoken": "9.0.2",
+        "mongoose": "8.8.3"
     },
     "devDependencies": {
         "@eslint/js": "9.14.0",
