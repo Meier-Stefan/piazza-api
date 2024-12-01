@@ -11,6 +11,7 @@ const createPostController = async (req, res) => {
     title: req.body.title,
     text: req.body.text,
     topic: req.body.topicId,
+    expirationTime: req.body.expirationTime,
   });
 
   try {

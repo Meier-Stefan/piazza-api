@@ -2,9 +2,10 @@ import moment from "moment";
 
 const arePostsActive = (posts) => {
   const postsWithActiveProperty = posts.map((post) => {
-    const ageInMinutes = moment().diff(moment(post.date), "minutes");
+    const { expirationTime, date } = post;
+    const ageInMinutes = moment().diff(moment(date), "minutes");
 
-    if (ageInMinutes > 5) {
+    if (ageInMinutes > expirationTime) {
       post.active = false;
 
       return post;
