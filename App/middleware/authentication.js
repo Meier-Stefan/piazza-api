@@ -7,7 +7,7 @@ const isAuthenticated = (req, res, next) => {
   }
   try {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-    req.body.userId = decodedToken.id;
+    req.body.userId = decodedToken._id;
     next();
   } catch (error) {
     return res.status(401).send({ message: error.message });
