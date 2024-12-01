@@ -78,8 +78,16 @@ The `jsonwebtoken` library creates that token using a secret variable from the .
 
 > **SPECIAL:** The json web token expires after one hour and contains the [user ID as payload](https://www.npmjs.com/package/jsonwebtoken). This user Id can for example be used by the controllers to make sure that one user does not modify the profile of another user.
 
-> **IDEA:** It would be useful, if the token would refresh.
+> **IDEA:** It would be useful if the token would refresh.
 
 ### Interact with an endpoint that requires authentication
 
 To keep the repository clean and organised, a middleware folder is used like suggested by [this turorial.](https://dev.to/taiwo17/nodejs-authentication-and-authorization-with-jwt-building-a-secure-web-application-236f#set-up-file-structure) The routes that require use the `isAuthenticated` middleware funciton to make sure that the user is logged in and allowed to proceed. Logged in means that the request headers contain a key value pair of a key containing `auth-token` and a value containing the json web token.If the user is not logged in, or has a wrong json web token, `isAuthenticated` will send the corresponding response instead of letting the route forwarding the request to the controller.
+
+## Phase C
+
+### Models
+
+The Models are created so that they are practical to use in this small project.
+
+> **IDEA:** For projects that could have milions of users, it would make sense to store the comments in separate collections and also to track likes in documents that store which user liked/disliked which post.
