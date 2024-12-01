@@ -1,6 +1,6 @@
 import bycrypt from "bcryptjs";
 import { User } from "#models/User.js";
-import { registerValidation } from "#controllers/user/registration/registerValidation.js";
+import { registerValidation } from "./registerValidation.js";
 
 const userRegistrationController = async (req, res) => {
   const { error } = registerValidation(req.body);
