@@ -91,3 +91,7 @@ To keep the repository clean and organised, a middleware folder is used like sug
 The Models are created so that they are practical to use in this small project.
 
 > **IDEA:** For projects that could have milions of users, it would make sense to store the comments in separate collections and also to track likes in documents that store which user liked/disliked which post.
+
+### Reactions and comments
+
+The reactions and comments on posts can only be done from the post detail endpoint. The frontend can call that from the list view and only update the affected post though.
