@@ -4,8 +4,10 @@ import { isAuthenticated } from "#middleware/authentication.js";
 
 const postRouter = express.Router();
 
-postRouter.get("/", isAuthenticated, pc.postListController);
+postRouter.get("/", isAuthenticated, pc.showPostList);
 postRouter.post("/new", isAuthenticated, pc.createPostController);
 postRouter.get("/:id", isAuthenticated, pc.postDetailController);
+postRouter.post("/:id/comment", isAuthenticated, pc.commentOnPost);
+postRouter.post("/:id/react", isAuthenticated, pc.reactToPost);
 
 export { postRouter };
