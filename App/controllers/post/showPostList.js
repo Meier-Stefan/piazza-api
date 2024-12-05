@@ -1,14 +1,14 @@
-import { arePostsActive } from "#controllers/helpers/arePostsActive.js";
+import { showIfActive } from "#controllers/helpers/showIfActive.js";
 import { Post } from "#models/Post.js";
 
-const postListController = async (req, res) => {
+const showPostList = async (req, res) => {
   try {
     const postsToGet = await Post.find().limit(15).lean();
-    const postsToDisplay = arePostsActive(postsToGet);
+    const postsToDisplay = showIfActive(postsToGet);
     res.send(postsToDisplay);
   } catch (error) {
     res.send({ message: error.message });
   }
 };
 
-export { postListController };
+export { showPostList };

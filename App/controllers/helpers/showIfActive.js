@@ -1,6 +1,6 @@
 import moment from "moment";
 
-const arePostsActive = (posts) => {
+const showIfActive = (posts) => {
   const postsWithActiveProperty = posts.map((post) => {
     const { expirationTime, date } = post;
     const ageInMinutes = moment().diff(moment(date), "minutes");
@@ -17,4 +17,4 @@ const arePostsActive = (posts) => {
   return postsWithActiveProperty;
 };
 
-export { arePostsActive };
+export { showIfActive };
