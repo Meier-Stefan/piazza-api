@@ -9,22 +9,26 @@ const reactToPost = async (req, res) => {
   const userIsAuthor = post.authorId.toString() === userId;
 
   async function reactToPost({ reaction, postId, userId }) {
-    const likedPost = await Post.findByIdAndUpdate(
+    const postToEngageWith = await Post.findByIdAndUpdate(
       postId,
       {
         $push: { [reaction]: userId },
       },
       { new: true },
     );
-    return { likedPost };
+    return { postToEngageWith };
   }
 
   try {
     if (userIsAuthor) {
       return res.send("you can not like your own post ;)");
     }
-    const { likedPost } = reactToPost({ reaction, postId, userId });
-    res.send(likedPost);
+    const { postToEngageWith } = await reactToPost({
+      reaction,
+      postId,
+      userId,
+    });
+    res.send(postToEngageWith);
   } catch (err) {
     console.error("Error adding comment:", err);
     res.send("something went wrong :(");

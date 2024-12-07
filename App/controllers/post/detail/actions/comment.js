@@ -10,7 +10,6 @@ const commentOnPost = async (req, res) => {
     text: text,
   };
 
-  console.log("update", newComment);
   try {
     const updatedPost = await Post.findByIdAndUpdate(
       postId,
