@@ -1,15 +1,10 @@
-import { Post } from "#models/Post.js";
-import { showIfActive } from "#controllers/helpers/showIfActive.js";
+import { showPostList } from "../post/showPostList/index.js";
 
-const topicDetailController = async (req, res) => {
+const topicDetailController = (req, res) => {
   const topicId = req.params.id;
-  try {
-    const postsToGet = await Post.find({ topic: { $in: topicId } });
-    const postsToDisplay = showIfActive(postsToGet);
-    res.send(postsToDisplay);
-  } catch (error) {
-    res.send({ message: error.message });
-  }
+  const { filters } = req.body;
+  req.body.filters = { ...filters, topic: { $in: topicId } };
+  showPostList(req, res);
 };
 
 export { topicDetailController };
