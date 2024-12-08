@@ -90,15 +90,38 @@ To keep the repository clean and organised, a middleware folder is used like sug
 
 The Models are created so that they are practical to use in this small project.
 
-> **IDEA:** For projects that could have milions of users, it would make sense to store the comments in separate collections and also to track likes in documents that store which user liked/disliked which post.
+As Joe Karlsson from mongodb explains in [this video,](https://www.youtube.com/watch?v=QAqK-R9HUhc) it is a good idea to think about what will be displayed when designing the database schema. I tied to follow this advice, but also, I did try not to over optimise as if this app was serving millions of users already.
+
+There are 3 Models:
+
+## Post
+
+![Screenshot of the DB entry](pictures/PostModel.png)
+
+The comments are and array of documents in the post documents for now. This is how it will be displayed.
+
+Reactions and comments conatain the link to the user like this: `likes: [{ type: Schema.Types.ObjectId, ref: "users" }],`
+
+> **IDEA:** For projects that could have milions of users, it would make sense to store the comments in separate collections and also to track likes in documents that store which user liked/disliked which post. Both of the above will help to avoid problems with the 16mb document limit and improve the query speed.
+
+## Topic
+
+![Screenshot of the DB entry](pictures/TopicModel.png)
+The topic is simple, it just contains a title and an array of posts. However, currently I don't use that array. If I display the posts of a topic, I use the post list controller and filter fo the topic id.
+
+> **IDEA:** The likes and dislikes are arrays of userIds. This can be displayed as number in the frontend. The user can then click/hover on these reaction numbers to see who reacted. Also, the creation date could be made human readable like the time to expiration in the `showIfActive` funciton.
+
+## User
+
+![Screenshot of the DB entry](pictures/UserModel.png)
+
+The username is not unique, so there could be more than one user with the same name, but for linking, the user ID is stored. Like this, buttons like `reply in direct message` or so, will still work.
 
 ### Reactions and comments
 
 The reactions and comments on posts can only be done from the post detail endpoint. The frontend can call that from the list view and only update the affected post though.
 
 ### Filter and Sort
-
-> **IDEA:** The likes and dislikes are arrays of userIds. This can be displayed as number in the frontend. The user can then click/hover on these reaction numbers to see who reacted.
 
 With this solution, the database stores the arrays and if the user wants to sort by interest, the app has to count and sort.
 
