@@ -1,4 +1,5 @@
 import { Post } from "#models/Post.js";
+import { Topic } from "#models/Topic.js";
 import { postValidation } from "./postValidation.js";
 
 const createPostController = async (req, res) => {
@@ -17,6 +18,13 @@ const createPostController = async (req, res) => {
 
   try {
     const postToSave = await postData.save();
+
+    await Topic.findOneAndUpdate(
+      { _id: req.body.topicId },
+      { $push: { posts: postToSave._id } },
+      { new: true },
+    );
+
     res.send(postToSave);
   } catch (error) {
     res.send({ message: error.message });
