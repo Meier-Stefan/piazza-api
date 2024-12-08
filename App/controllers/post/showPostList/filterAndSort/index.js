@@ -1,18 +1,30 @@
 import { Post } from "#models/Post.js";
-import { filterByActive } from "./filterByActive.js";
+import { addStatusAndEngagement } from "./addStatusAndEngagement.js";
+import { filterByStatus } from "./filterByStatus.js";
 import { sortByInterest } from "./sortByInterest.js";
 
 const filterAndSort = async ({ filters, sort }) => {
-  if (sort === "interest") {
-    const postsByInterest = await sortByInterest({ filters });
-    return postsByInterest;
+  const statusFilter = filters.active;
+  delete filters.active;
+
+  const filteredPosts =
+    sort === "interest"
+      ? await Post.find(filters).limit(15).lean()
+      : await Post.find(filters).sort(sort).limit(15).lean();
+
+  const enhancedPosts = addStatusAndEngagement(filteredPosts);
+
+  const postsToDisplay =
+    sort === "interest" ? sortByInterest(enhancedPosts) : enhancedPosts;
+
+  if (statusFilter !== undefined) {
+    return filterByStatus({
+      posts: postsToDisplay,
+      statusFilter,
+    });
   }
-  if ("active" in filters) {
-    const postsByActive = await filterByActive({ filters, sort });
-    return postsByActive;
-  }
-  const postsToGet = await Post.find(filters).sort(sort).limit(15).lean();
-  return postsToGet;
+
+  return postsToDisplay;
 };
 
 export { filterAndSort };
