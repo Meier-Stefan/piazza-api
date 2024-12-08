@@ -95,3 +95,15 @@ The Models are created so that they are practical to use in this small project.
 ### Reactions and comments
 
 The reactions and comments on posts can only be done from the post detail endpoint. The frontend can call that from the list view and only update the affected post though.
+
+### Filter and Sort
+
+> **IDEA:** The likes and dislikes are arrays of userIds. This can be displayed as number in the frontend. The user can then click/hover on these reaction numbers to see who reacted.
+
+With this solution, the database stores the arrays and if the user wants to sort by interest, the app has to count and sort.
+
+Similarily the status 'active' is calculated by the app with the help of database values and the local time of the client.
+
+Because both of the above modify the posts that are displayed and can be filtered or sorted, the logic gets a bit messy. One sort or filter is done locally and based on that, the rest is sent to the database to handle.
+
+> **IDEA:** The limit of posts fetched is set to 15, which is a good number of posts to show per page. The frontend pagination logic will trigger fetcing the next 15 if the user paginates.
