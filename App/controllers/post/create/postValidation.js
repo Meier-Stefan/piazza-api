@@ -7,7 +7,7 @@ const postValidation = (data) => {
     title: joi.string().required().min(3).max(256),
     text: joi.string().required().min(3).max(2048),
     topicId: joi.string().required(),
-    expirationTime: joi.number().min(7),
+    expirationTime: joi.number().min(5),
   });
 
   return schemaValidation.validate(data);
