@@ -8,6 +8,7 @@ const createPostController = async (req, res) => {
   }
   const postData = new Post({
     authorId: req.body.userId,
+    authorName: req.body.userName,
     title: req.body.title,
     text: req.body.text,
     topic: req.body.topicId,

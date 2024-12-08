@@ -4,6 +4,7 @@ const PostSchema = Schema({
   title: { type: String, required: true, min: 3, max: 256 },
   text: { type: String, required: true, min: 3, max: 2048 },
   authorId: { type: Schema.Types.ObjectId, required: true, ref: "users" },
+  authorName: { type: String, required: true, min: 3, max: 256 },
   topic: [{ type: Schema.Types.ObjectId, required: true, ref: "topics" }],
   expirationTime: { type: Number, required: true, min: 5 },
   comments: [

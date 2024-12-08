@@ -5,6 +5,6 @@ const TopicSchema = Schema({
   posts: [{ type: Schema.Types.ObjectId, ref: "posts" }],
 });
 
-const Topic = model("posts", TopicSchema);
+const Topic = model("topics", TopicSchema);
 
 export { Topic };

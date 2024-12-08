@@ -12,6 +12,7 @@ const showIfActive = (posts) => {
     }
 
     post.active = true;
+    post.timeLeft = `${moment.duration(expirationTime - ageInMinutes, "minutes").humanize()}`;
     return post;
   });
   return postsWithActiveProperty;
