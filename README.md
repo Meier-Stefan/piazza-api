@@ -78,8 +78,145 @@ The `jsonwebtoken` library creates that token using a secret variable from the .
 
 > **SPECIAL:** The json web token expires after one hour and contains the [user ID as payload](https://www.npmjs.com/package/jsonwebtoken). This user Id can for example be used by the controllers to make sure that one user does not modify the profile of another user.
 
-> **IDEA:** It would be useful, if the token would refresh.
+> **IDEA:** It would be useful if the token would refresh.
 
 ### Interact with an endpoint that requires authentication
 
 To keep the repository clean and organised, a middleware folder is used like suggested by [this turorial.](https://dev.to/taiwo17/nodejs-authentication-and-authorization-with-jwt-building-a-secure-web-application-236f#set-up-file-structure) The routes that require use the `isAuthenticated` middleware funciton to make sure that the user is logged in and allowed to proceed. Logged in means that the request headers contain a key value pair of a key containing `auth-token` and a value containing the json web token.If the user is not logged in, or has a wrong json web token, `isAuthenticated` will send the corresponding response instead of letting the route forwarding the request to the controller.
+
+## Phase C
+
+### Models
+
+The Models are created so that they are practical to use in this small project.
+
+As Joe Karlsson from mongodb explains in [this video,](https://www.youtube.com/watch?v=QAqK-R9HUhc) it is a good idea to think about what will be displayed when designing the database schema. I tied to follow this advice, but also, I did try not to over optimise as if this app was serving millions of users already.
+
+There are 3 Models:
+
+#### Post
+
+![Screenshot of the DB entry](pictures/PostModel.png)
+The comments are and array of documents in the post documents for now. This is how it will be displayed.
+
+Reactions and comments conatain the link to the user like this: `likes: [{ type: Schema.Types.ObjectId, ref: "users" }],`
+
+> **IDEA:** For projects that could have milions of users, it would make sense to store the comments in separate collections and also to track likes in documents that store which user liked/disliked which post. Both of the above will help to avoid problems with the 16mb document limit and improve the query speed.
+
+#### Topic
+
+![Screenshot of the DB entry](pictures/TopicModel.png)
+The topic is simple, it just contains a title and an array of posts. However, currently I don't use that array. If I display the posts of a topic, I use the post list controller and filter fo the topic id.
+
+> **IDEA:** The likes and dislikes are arrays of userIds. This can be displayed as number in the frontend. The user can then click/hover on these reaction numbers to see who reacted. Also, the creation date could be made human readable like the time to expiration in the `showIfActive` funciton.
+
+#### User
+
+![Screenshot of the DB entry](pictures/UserModel.png)
+The username is not unique, so there could be more than one user with the same name, but for linking, the user ID is stored. Like this, buttons like `reply in direct message` or so, will still work.
+
+### Reactions and comments
+
+The reactions and comments on posts can only be done from the post detail endpoint. The frontend can call that from the list view and only update the affected post though.
+
+### Filter and Sort
+
+With this solution, the database stores the arrays and if the user wants to sort by interest, the app has to count and sort.
+
+Similarily the status 'active' is calculated by the app with the help of database values and the local time of the client.
+
+Because both of the above modify the posts that are displayed and can be filtered or sorted, the logic gets a bit messy. One sort or filter is done locally and based on that, the rest is sent to the database to handle.
+
+> **IDEA:** The limit of posts fetched is set to 15, which is a good number of posts to show per page. The frontend pagination logic will trigger fetcing the next 15 if the user paginates.
+
+### API reference
+
+`/`:  
+The welcome page. Responds with 'please log in' or if logged in, 'hello, [username]'.
+
+#### Endpoints that can be accessed if authorised:
+
+GET `post/`:  
+List of posts. Responds with an array of Post objects. Can be used with `filters` or `sort`, that are passed in the request body as follows:
+`{filters:[options]}`  
+options include:  
+`active`: type: Boolean `false|true `  
+`topic`: type: [Schema.Types.ObjectId](https://mongoosejs.com/docs/schematypes.html#objectids) `"topicId"`  
+`authorId`: type: [Schema.Types.ObjectId](https://mongoosejs.com/docs/schematypes.html#objectids) `"topicId"`
+
+POST `post/new`:  
+Create a new post. Responds with the newly created post object.
+The new post is passed in the request body in the following format:
+
+```
+  title: { type: String, required: true, min: 3, max: 256 },
+  text: { type: String, required: true, min: 3, max: 2048 },
+  topicId: [{ type: Schema.Types.ObjectId, required: true, ref: "topics" }],
+  expirationTime: { type: Number, required: true, min: 5 },
+```
+
+example:  
+`{"title":"Question",
+ "text":"What is the coolest animal?",
+ "expirationTime":"8",
+ "topicId": "674c7965f3a45b229d3b02d9"}`
+
+GET `post/:id`:  
+Detail view of a post.
+
+POST `post/:id/comment`:  
+Accepts new comments for posts if they are still active. The comments are passed in the request body in the following format:
+
+```
+{ text: { type: String, required: true, min: 3, max: 1024 }}
+```
+
+POST `post/:id/react`:  
+Accepts new reactions for posts if they are still active. Reactions are passed in the request body in the following format:
+
+```
+{ reaction: [options]}
+```
+
+The options are one of the two following strings: `"likes"` or `"dislikes"`
+
+GET `topic/`:  
+List of all the topics. Still needs to be implemented. Curretnly responds with the string "Topic list endpoint"
+
+GET `topic/:id`:  
+Detail view of a topic. Responds with a list of post that belong to the topic. Accepts the same request body options as `post/`.
+
+POST `user/login`:  
+Login page. Responds with a json web token. This is implented in that way that it is easy to test/review. Accepts the following request body:
+
+```
+{email: { type: String, required: true, min: 3, max: 256 },
+password: { type: String, required: true, min: 3, max: 1024 },}
+```
+
+example:
+
+```
+{"email":"user@mail.com",
+"password":"TQVm4cBK"}
+```
+
+POST `user/registration`:
+Registration page. Responds with the new created user object. Accepts the following request body:
+
+```
+ username: { type: String, required: true, min: 3, max: 256 },
+  email: { type: String, required: true, min: 3, max: 256 },
+  password: { type: String, required: true, min: 3, max: 1024 }
+```
+
+example:
+
+```
+{"username":"user",
+"email":"user@mail.com",
+"password":"TQVm4cBK"}
+```
+
+GET `user/:id`  
+User detail page. Still needs to be implemented. Curretnly responds with the string "User profile endpoint".
