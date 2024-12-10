@@ -151,7 +151,7 @@ The new post is passed in the request body in the following format:
 ```
   title: { type: String, required: true, min: 3, max: 256 },
   text: { type: String, required: true, min: 3, max: 2048 },
-  topic: [{ type: Schema.Types.ObjectId, required: true, ref: "topics" }],
+  topicId: [{ type: Schema.Types.ObjectId, required: true, ref: "topics" }],
   expirationTime: { type: Number, required: true, min: 5 },
 ```
 
