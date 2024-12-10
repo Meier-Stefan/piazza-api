@@ -151,7 +151,7 @@ The new post is passed in the request body in the following format:
 ```
   title: { type: String, required: true, min: 3, max: 256 },
   text: { type: String, required: true, min: 3, max: 2048 },
-  topic: [{ type: Schema.Types.ObjectId, required: true, ref: "topics" }],
+  topicId: [{ type: Schema.Types.ObjectId, required: true, ref: "topics" }],
   expirationTime: { type: Number, required: true, min: 5 },
 ```
 
@@ -220,3 +220,81 @@ example:
 
 GET `user/:id`  
 User detail page. Still needs to be implemented. Curretnly responds with the string "User profile endpoint".
+
+## Phase D
+
+## Phase E
+
+To provide the env variables needed, I passed them to the Docker container using the --env flag. There are better ways, but for this one time deployment it is fine like this.
+
+## Phase F
+
+To provide the secret
+
+```
+kubectl create secret generic database-connection \
+--from-literal=MONGODB_URI='<actual string that the mongodb dashboard provides>'
+
+kubectl create secret generic json-web-token-secret \
+--from-literal=JWT_SECRET='<actual secret>'
+```
+
+The fife nodes were started like we learned in class.
+
+````
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: piazza-api-deployment
+  labels:
+    app: piazza-api
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: piazza-api
+  template:
+    metadata:
+      labels:
+        app: piazza-api
+    spec:
+      containers:
+      - name: piazza-api
+        image: meierstefan/piazza-api:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3000
+        envFrom:
+        - secretRef:
+            name: json-web-token-secret
+        - secretRef:
+            name: database-connection
+        ```
+````
+
+Loadbalancer:
+
+```
+apiVersion: v1
+kind: Service
+metadata:
+  name: piazza-api-service
+  labels:
+    app: piazza-api-service
+spec:
+  type: LoadBalancer
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: 3000
+  selector:
+    app: piazza-api
+  sessionAffinity: None
+```
+
+smeier01@cloudshell:~ (deft-bazaar-437518-v4)$ kubectl get services
+NAME TYPE CLUSTER-IP EXTERNAL-IP PORT(S) AGE
+kubernetes ClusterIP 34.118.224.1 <none> 443/TCP 82m
+piazza-api-service LoadBalancer 34.118.239.162 34.46.72.93 80:30686/TCP 8m44s
+smeier01@cloudshell:~ (deft-bazaar-437518-v4)$
