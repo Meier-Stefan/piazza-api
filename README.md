@@ -232,3 +232,59 @@ From my local, I push code to Github, and there I manually trigger a Github Acti
 To provide the env variables needed, I passed them to the Docker container using the --env flag:
 `docker run --env MONGODB_URI"<the actual string>" --env JWT_SECRET="<the actual secret>" -p 80:3000 meierstefan/piazza-api`
 There are better ways, but for this one time deployment it is fine like this.
+
+## Phase F
+
+### 5 Replicas
+
+In kubernetes, secrets can not simply be passed as env variables, because there are multiple containers and maybe we will add more later. To provide the secret in the simplest way, I created Kubernetes secrets as follows:
+
+```
+kubectl create secret generic database-connection \
+--from-literal=MONGODB_URI='<actual string that the mongodb dashboard provides>'
+
+kubectl create secret generic json-web-token-secret \
+--from-literal=JWT_SECRET='<actual secret>'
+```
+
+Then everything was ready and the fife nodes could be started like we learned [in class](https://github.com/warestack/cc/tree/master/Class-6). First the deployment yaml file is created with `vim` directly in the google cloud console.
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: piazza-api-deployment
+  labels:
+    app: piazza-api
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: piazza-api
+  template:
+    metadata:
+      labels:
+        app: piazza-api
+    spec:
+      containers:
+      - name: piazza-api
+        image: meierstefan/piazza-api:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3000
+        envFrom:
+        - secretRef:
+            name: json-web-token-secret
+        - secretRef:
+            name: database-connection
+```
+
+The simple steps are explained one by one in [this article](https://spacelift.io/blog/kubernetes-deployment-yaml). Interesting is the `imagePullPolicy`: [Here](https://kubernetes.io/docs/concepts/containers/images/) the kubernetes docs explain what is going on. We have set it so `Always`, which means that everytime a new container is launched, kubernetes checks, if there is a new image in the docker registry. If there is a new one, it pulls it to the virtual machine. But if the one in the cache is the exactly same already, it does not pull the image because it can use the cache.
+
+To start the replicas, we tell `kubectl` to apply the file.
+![Kubernetes start of replicas.](pictures/StartReplicas.png)
+
+To make sure that they are alive, we tell it to get the pods.
+![Kubernetes get pods.](pictures/GetPods.png)
+
+> **IDEA:** To make the setup easier, it would be a good idea to put the secrets into the [secret-manager](https://cloud.google.com/security/products/secret-manager) and then they could be accessed from terraform. Then, it is no longer neccesary to manually start the pods with `kubectl`.
