@@ -1,0 +1,62 @@
+[
+    {
+        "_id": "6755f4ad9502ff8e22d4ef69",
+        "title": "Best invention",
+        "text": "What is the best technology invented? Leave it in the comments below.",
+        "authorId": "6755f2cf9502ff8e22d4ef5f",
+        "authorName": "Mary",
+        "topic": [
+            "6755f202b01558af18266944"
+        ],
+        "expirationTime": 50,
+        "likes": [
+            "6755f2969502ff8e22d4ef59",
+            "6755f2ba9502ff8e22d4ef5c"
+        ],
+        "dislikes": [
+            "6755f2e29502ff8e22d4ef62"
+        ],
+        "comments": [],
+        "date": "2024-12-08T19:34:05.048Z",
+        "__v": 0,
+        "active": true,
+        "timeLeft": "24 minutes"
+    },
+    {
+        "_id": "6755f5319502ff8e22d4ef6d",
+        "title": "I know the best invention",
+        "text": "I truly believe that Windows XP was the peak of tech inventions.",
+        "authorId": "6755f2ba9502ff8e22d4ef5c",
+        "authorName": "Nick",
+        "topic": [
+            "6755f202b01558af18266944"
+        ],
+        "expirationTime": 50,
+        "likes": [
+            "6755f2e29502ff8e22d4ef62"
+        ],
+        "dislikes": [],
+        "comments": [],
+        "date": "2024-12-08T19:36:17.375Z",
+        "__v": 0,
+        "active": true,
+        "timeLeft": "26 minutes"
+    },
+    {
+        "_id": "6755f5e89502ff8e22d4ef71",
+        "title": "Check out that Channel on Youtube",
+        "text": "Techworld with Nana: https://www.youtube.com/@TechWorldwithNana",
+        "authorId": "6755f2969502ff8e22d4ef59",
+        "authorName": "Olga",
+        "topic": [
+            "6755f202b01558af18266944"
+        ],
+        "expirationTime": 5,
+        "likes": [],
+        "dislikes": [],
+        "comments": [],
+        "date": "2024-12-08T19:39:20.568Z",
+        "__v": 0,
+        "active": false
+    }
+]
