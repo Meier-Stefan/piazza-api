@@ -224,3 +224,11 @@ User detail page. Still needs to be implemented. Curretnly responds with the str
 ## Phase D
 
 To test the application, the app was deployed in the google cloud virtual machine and then tested manually. The test report can be found in the `TestCases.md` file.
+
+## Phase E
+
+For the testing, the app was deployed into a google cloud virtual machine with almost the same method as described above in Phase A:
+From my local, I push code to Github, and there I manually trigger a Github Action, that lets the docker cloud build the image. After that, the image is pulled from the cloud VM, that has Docker installed and a docker user set up. The only differenct to Phase A is, that now there is an app deployed that needs to handle tokens and connect to the database. As I am not pushing the .env file to github, the secrets must be provided differently:
+To provide the env variables needed, I passed them to the Docker container using the --env flag:
+`docker run --env MONGODB_URI"<the actual string>" --env JWT_SECRET="<the actual secret>" -p 80:3000 meierstefan/piazza-api`
+There are better ways, but for this one time deployment it is fine like this.
