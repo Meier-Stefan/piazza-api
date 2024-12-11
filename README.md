@@ -288,3 +288,30 @@ To make sure that they are alive, we tell it to get the pods.
 ![Kubernetes get pods.](pictures/GetPods.png)
 
 > **IDEA:** To make the setup easier, it would be a good idea to put the secrets into the [secret-manager](https://cloud.google.com/security/products/secret-manager) and then they could be accessed from terraform. Then, it is no longer neccesary to manually start the pods with `kubectl`.
+
+### Loadbalancer
+
+With the load balancer, we make the pods accessible. Like above, we need this file first:
+
+```
+apiVersion: v1
+kind: Service
+metadata:
+  name: piazza-api-service
+  labels:
+    app: piazza-api-service
+spec:
+  type: LoadBalancer
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: 3000
+  selector:
+    app: piazza-api
+  sessionAffinity: None
+```
+
+![Kubernetes start loadbalancer service.](pictures/DefineAndStartService.png)
+
+[The docs](https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer) explain that kubernetes does not have a load balancer, but by setting the `type` of this service to `Loadbalancer`, we will use the google cloud default load balancer.
