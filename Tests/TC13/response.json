@@ -1,0 +1,90 @@
+[
+    {
+        "_id": "6755f4ad9502ff8e22d4ef69",
+        "title": "Best invention",
+        "text": "What is the best technology invented? Leave it in the comments below.",
+        "authorId": "6755f2cf9502ff8e22d4ef5f",
+        "authorName": "Mary",
+        "topic": [
+            "6755f202b01558af18266944"
+        ],
+        "expirationTime": 50,
+        "likes": [
+            "6755f2969502ff8e22d4ef59",
+            "6755f2ba9502ff8e22d4ef5c"
+        ],
+        "dislikes": [
+            "6755f2e29502ff8e22d4ef62"
+        ],
+        "comments": [
+            {
+                "commentorId": "6755f2ba9502ff8e22d4ef5c",
+                "text": "I know it, and by coincidence posted about it... It is Windows XP!",
+                "_id": "6755fe28a176b8e27d6cdca9",
+                "date": "2024-12-08T20:14:32.467Z"
+            },
+            {
+                "commentorId": "6755f2969502ff8e22d4ef59",
+                "text": "I believe you are wrong, Nick! It is cloud computing!",
+                "_id": "6755fe92a176b8e27d6cdcaf",
+                "date": "2024-12-08T20:16:18.575Z"
+            },
+            {
+                "commentorId": "6755f2ba9502ff8e22d4ef5c",
+                "text": "Nono! I believe you are wrong, Olga! There was even a cloud on the default wallpaper of Windows XP!",
+                "_id": "6755fefda176b8e27d6cdcb7",
+                "date": "2024-12-08T20:18:05.584Z"
+            },
+            {
+                "commentorId": "6755f2969502ff8e22d4ef59",
+                "text": "Nick, clouds are mostly made out of linux computers...",
+                "_id": "6755ff3fa176b8e27d6cdcc1",
+                "date": "2024-12-08T20:19:11.111Z"
+            }
+        ],
+        "date": "2024-12-08T19:34:05.048Z",
+        "__v": 0,
+        "active": true,
+        "timeLeft": "a minute",
+        "engagement": 3
+    },
+    {
+        "_id": "6755f5319502ff8e22d4ef6d",
+        "title": "I know the best invention",
+        "text": "I truly believe that Windows XP was the peak of tech inventions.",
+        "authorId": "6755f2ba9502ff8e22d4ef5c",
+        "authorName": "Nick",
+        "topic": [
+            "6755f202b01558af18266944"
+        ],
+        "expirationTime": 50,
+        "likes": [
+            "6755f2e29502ff8e22d4ef62"
+        ],
+        "dislikes": [],
+        "comments": [],
+        "date": "2024-12-08T19:36:17.375Z",
+        "__v": 0,
+        "active": true,
+        "timeLeft": "3 minutes",
+        "engagement": 1
+    },
+    {
+        "_id": "6755f5e89502ff8e22d4ef71",
+        "title": "Check out that Channel on Youtube",
+        "text": "Techworld with Nana: https://www.youtube.com/@TechWorldwithNana",
+        "authorId": "6755f2969502ff8e22d4ef59",
+        "authorName": "Olga",
+        "topic": [
+            "6755f202b01558af18266944"
+        ],
+        "expirationTime": 5,
+        "likes": [],
+        "dislikes": [],
+        "comments": [],
+        "date": "2024-12-08T19:39:20.568Z",
+        "__v": 0,
+        "active": false,
+        "engagement": 0
+    }
+]

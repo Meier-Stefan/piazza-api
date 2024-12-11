@@ -220,3 +220,7 @@ example:
 
 GET `user/:id`  
 User detail page. Still needs to be implemented. Curretnly responds with the string "User profile endpoint".
+
+## Phase D
+
+To test the application, the app was deployed in the google cloud virtual machine and then tested manually. The test report can be found in the `TestCases.md` file.
