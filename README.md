@@ -14,11 +14,11 @@ Create a .env file and populate it with the database connector string that you c
 
 ### Development Setup
 
-The project uses yarn as package manager, prettier as linter and nodemon to run the development server and track changes during development. These are all listed as 'devdependencies' in the package.lock file.
+The project uses `yarn` as package manager, `prettier` as formatter, `eslint` as linter and `nodemon` to run the development server and track changes during development. These are all listed as 'devdependencies' in the package.json file. I am used to have these helpers in my projects and combined with the VSCode settings, they help me to focus on the logic of the code.
 
 ### Project Setup
 
-The Api is a Node.js application that uses the Express framework. The docker container that will be deployed to the virtual server in the cloud will have Node installed. This means Node will run the app on the virual server. During development, however, Nodemon is used, hence it is a developent dependency.
+The Api is a Node.js application that uses the Express framework. The docker container that will be deployed to the virtual server in the cloud will have Node installed. This means Node will run the app on the virual server. During development, however, Nodemon is used, hence it is a developent dependency. I set the the eslint config on purpose so that I can use modules, as we use a modern node version and all the dependencies used in the project are compatible.
 
 ## Phase A
 
@@ -314,4 +314,4 @@ spec:
 
 ![Kubernetes start loadbalancer service.](pictures/DefineAndStartService.png)
 
-[The docs](https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer) explain that kubernetes does not have a load balancer, but by setting the `type` of this service to `Loadbalancer`, we will use the google cloud default load balancer.
+[The docs](https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer) explain that kubernetes does not have a load balancer, but by setting the `type` of this service to `Loadbalancer`, we will use the google cloud default load balancer. We set `sessionAffinity` to `None` because it does not matter if the request of the client is always passed to the same pod.
