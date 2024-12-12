@@ -92,7 +92,10 @@ The Models are created so that they are practical to use in this small project.
 
 As Joe Karlsson from mongodb explains in [this video,](https://www.youtube.com/watch?v=QAqK-R9HUhc) it is a good idea to think about what will be displayed when designing the database schema. I tied to follow this advice, but also, I did try not to over optimise as if this app was serving millions of users already.
 
-There are 3 Models:
+There are 3 Models:  
+![UML diagram about models](pictures/ModelsUML.svg)
+The above diagram follows the style of t[he mozilla tutorial](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/mongoose#designing_the_locallibrary_models) that also uses mongoose.
+`Users` can create zero or many `Posts`, `Comments`, `Likes`, and `Dislikes`. Each `Post` and each `Comment` have one `User` as author. `Likes` and `Dislikes` are arrays that can have zero or many `Users` listed. Each `Post` must have at least one `Topic`, but a `Topic` has zero or many `Posts`.
 
 #### Post
 
