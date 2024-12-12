@@ -26,7 +26,7 @@ The Api is a Node.js application that uses the Express framework. The docker con
 
 All the logic is in the `App` directory. This helps to create a more maintainable and scalable structure for the app. As suggested in [this article](https://dev.to/mr_ali3n/folder-structure-for-nodejs-expressjs-project-435l) the directory is called `App` and instead of `Src` because the files run on the server and will not be compiled, transpiled, and minified to be sent to the client.
 The routes forward the request to their corresponding controllers, which will then send the response. This is a good practise shown in the [Mozilla Express Tutorial](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/routes#overview)
-Adding the `App` directory as 'imports' alias in the `package.json`, makes it easy to import functions from the right place.
+Adding the `App` directory as 'imports' alias in the `package.json`, makes it easy to import functions from the right place.  
 ![app directory structure](pictures/AppDirectoryStructure.svg)
 
 ### Infrastructure Setup Description
@@ -34,25 +34,25 @@ Adding the `App` directory as 'imports' alias in the `package.json`, makes it ea
 The app is containerized as described in [the docker docs](https://docs.docker.com/get-started/workshop/02_our_app/). The only thing that needs to be adjusted is on line 7: the app.js sits in the root directory and is not called index.js.
 
 [Docker Build Cloud is used in CI (continuous integration)](https://docs.docker.com/build-cloud/ci/). For this, the docker username must be added as environment variable in the GitHub Repository. And a Personal Access Token (PAT) needs to be added as secret.
-GitHub Actions secrets and variables:
-![Screenshot of the GitHub Actions secrets and variables page](pictures/GitHubActionsVariables.png)
+GitHub Actions secrets and variables:  
+![Screenshot of the GitHub Actions secrets and variables page](pictures/GitHubActionsVariables.png)  
 The docker manual triggers on push to the main branch, but I decided to use the manual workflow_dispatch event trigger instead.
 In the docker build cloud, a cloud builder needs to be added, I added one and called it `piazza-builder`.
-GitHub Actions let the docker cloud build the image:
-![GitHub Actions let the docker cloud build the image](pictures/GitHubActionsCItoDockerCloudBuild.png)
-Docker Build Cloud is fast, but it costs to build. They gave me 60 free minutes because I implemented CI from Github Actions, thanks Docker. Build minutes overview:
-![Screenshot of build minutes overview](pictures/DockerBuildCloudMinutes.png)
+GitHub Actions let the docker cloud build the image:  
+![GitHub Actions let the docker cloud build the image](pictures/GitHubActionsCItoDockerCloudBuild.png)  
+Docker Build Cloud is fast, but it costs to build. They gave me 60 free minutes because I implemented CI from Github Actions, thanks Docker. Build minutes overview:  
+![Screenshot of build minutes overview](pictures/DockerBuildCloudMinutes.png)  
 As a result, the image was available on Docker Hub:
-[Docker Hub Images](DockerHubImages.png)
+![Docker Hub Images](DockerHubImages.png)  
 To make the REST API endpoints available in the virtual machine, Docker was installed on the virtual machine and the docker-user was created like in [lab 5.1](https://github.com/warestack/cc/blob/master/Class-5/Lab5.1%20Introduction%20to%20Docker.md). [Video of lab 5.1](https://github.com/warestack/cc/blob/master/Class-5/Lab5.1%20Introduction%20to%20Docker.md)
-The docker-user was logged in on docker hub using the PAT method from above. Then the docker container was started with port mapping like shown in lab 5.1. Because the image was only in the docker cloud, it was automatically pulled before the container was started:
-![Screenshot of running the container in the virtual machine](pictures/RunContainerFromDockerHub.png)
+The docker-user was logged in on docker hub using the PAT method from above. Then the docker container was started with port mapping like shown in lab 5.1. Because the image was only in the docker cloud, it was automatically pulled before the container was started:  
+![Screenshot of running the container in the virtual machine](pictures/RunContainerFromDockerHub.png)  
 Once the container was up and running, the endpoints were available under the virtual machine IP address. The following screenshots show the Home page, post list endpoint, topic detail, topic list and user profile endpoints:
 
-![Home page availabe under the virtual machine IP address](pictures/HomeDeployedContainer.png)
-![Post  endpoint availabe under the virtual machine IP address](pictures/PostEndpointDeployedConatiner.png)
-![Topic detail endpoint availabe under the virtual machine IP address](pictures/TopicDetailDeployedContainer.png)
-![Topic list endpoint availabe under the virtual machine IP address](pictures/TopicListDeployedContainer.png)
+![Home page availabe under the virtual machine IP address](pictures/HomeDeployedContainer.png)  
+![Post  endpoint availabe under the virtual machine IP address](pictures/PostEndpointDeployedConatiner.png)  
+![Topic detail endpoint availabe under the virtual machine IP address](pictures/TopicDetailDeployedContainer.png)  
+![Topic list endpoint availabe under the virtual machine IP address](pictures/TopicListDeployedContainer.png)  
 ![User profile endpoint availabe under the virtual machine IP address](pictures/UserProfileDeployedContainer.png)
 
 ## Phase B
@@ -99,7 +99,7 @@ The above diagram follows the style of t[he mozilla tutorial](https://developer.
 
 #### Post
 
-![Screenshot of the DB entry](pictures/PostModel.png)
+![Screenshot of the DB entry](pictures/PostModel.png)  
 The comments are and array of documents in the post documents for now. This is how it will be displayed.
 
 Reactions and comments conatain the link to the user like this: `likes: [{ type: Schema.Types.ObjectId, ref: "users" }],`
@@ -108,14 +108,14 @@ Reactions and comments conatain the link to the user like this: `likes: [{ type:
 
 #### Topic
 
-![Screenshot of the DB entry](pictures/TopicModel.png)
+![Screenshot of the DB entry](pictures/TopicModel.png)  
 The topic is simple, it just contains a title and an array of posts. However, currently I don't use that array. If I display the posts of a topic, I use the post list controller and filter fo the topic id.
 
 > **IDEA:** The likes and dislikes are arrays of userIds. This can be displayed as number in the frontend. The user can then click/hover on these reaction numbers to see who reacted. Also, the creation date could be made human readable like the time to expiration in the `showIfActive` funciton.
 
 #### User
 
-![Screenshot of the DB entry](pictures/UserModel.png)
+![Screenshot of the DB entry](pictures/UserModel.png)  
 The username is not unique, so there could be more than one user with the same name, but for linking, the user ID is stored. Like this, buttons like `reply in direct message` or so, will still work.
 
 ### Reactions and comments
@@ -284,10 +284,10 @@ spec:
 
 The simple steps are explained one by one in [this article](https://spacelift.io/blog/kubernetes-deployment-yaml). Interesting is the `imagePullPolicy`: [Here](https://kubernetes.io/docs/concepts/containers/images/) the kubernetes docs explain what is going on. We have set it so `Always`, which means that everytime a new container is launched, kubernetes checks, if there is a new image in the docker registry. If there is a new one, it pulls it to the virtual machine. But if the one in the cache is the exactly same already, it does not pull the image because it can use the cache.
 
-To start the replicas, we tell `kubectl` to apply the file.
+To start the replicas, we tell `kubectl` to apply the file.  
 ![Kubernetes start of replicas.](pictures/StartReplicas.png)
 
-To make sure that they are alive, we tell it to get the pods.
+To make sure that they are alive, we tell it to get the pods.  
 ![Kubernetes get pods.](pictures/GetPods.png)
 
 > **IDEA:** To make the setup easier, it would be a good idea to put the secrets into the [secret-manager](https://cloud.google.com/security/products/secret-manager) and then they could be accessed from terraform. Then, it is no longer neccesary to manually start the pods with `kubectl`.
