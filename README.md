@@ -14,19 +14,19 @@ Create a .env file and populate it with the database connector string that you c
 
 ### Development Setup
 
-The project uses yarn as package manager, prettier as linter and nodemon to run the development server and track changes during development. These are all listed as 'devdependencies' in the package.lock file.
+The project uses `yarn` as package manager, `prettier` as formatter, `eslint` as linter and `nodemon` to run the development server and track changes during development. These are all listed as 'devdependencies' in the package.json file. I am used to have these helpers in my projects and combined with the VSCode settings, they help me to focus on the logic of the code.
 
 ### Project Setup
 
-The Api is a Node.js application that uses the Express framework. The docker container that will be deployed to the virtual server in the cloud will have Node installed. This means Node will run the app on the virual server. During development, however, Nodemon is used, hence it is a developent dependency.
+The Api is a Node.js application that uses the Express framework. The docker container that will be deployed to the virtual server in the cloud will have Node installed. This means Node will run the app on the virual server. During development, however, Nodemon is used, hence it is a developent dependency. I set the the eslint config on purpose so that I can use modules, as we use a modern node version and all the dependencies used in the project are compatible.
 
 ## Phase A
 
 ### App Directory Structure
 
 All the logic is in the `App` directory. This helps to create a more maintainable and scalable structure for the app. As suggested in [this article](https://dev.to/mr_ali3n/folder-structure-for-nodejs-expressjs-project-435l) the directory is called `App` and instead of `Src` because the files run on the server and will not be compiled, transpiled, and minified to be sent to the client.
-The routes forward the request to their corresponding controllers, which will then send the response. This is a good practise shown in the [Mozilla Express Tutorial](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/routes#overview)
-Adding the `App` directory as 'imports' alias in the `package.json`, makes it easy to import functions from the right place.
+The routes forward the request to their corresponding controllers, which will then send the response. This is a good practice shown in the [Mozilla Express Tutorial](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/routes#overview)
+Adding the `App` directory as 'imports' alias in the `package.json`, makes it easy to import functions from the right place.  
 ![app directory structure](pictures/AppDirectoryStructure.svg)
 
 ### Infrastructure Setup Description
@@ -34,25 +34,25 @@ Adding the `App` directory as 'imports' alias in the `package.json`, makes it ea
 The app is containerized as described in [the docker docs](https://docs.docker.com/get-started/workshop/02_our_app/). The only thing that needs to be adjusted is on line 7: the app.js sits in the root directory and is not called index.js.
 
 [Docker Build Cloud is used in CI (continuous integration)](https://docs.docker.com/build-cloud/ci/). For this, the docker username must be added as environment variable in the GitHub Repository. And a Personal Access Token (PAT) needs to be added as secret.
-GitHub Actions secrets and variables:
-![Screenshot of the GitHub Actions secrets and variables page](pictures/GitHubActionsVariables.png)
+GitHub Actions secrets and variables:  
+![Screenshot of the GitHub Actions secrets and variables page](pictures/GitHubActionsVariables.png)  
 The docker manual triggers on push to the main branch, but I decided to use the manual workflow_dispatch event trigger instead.
 In the docker build cloud, a cloud builder needs to be added, I added one and called it `piazza-builder`.
-GitHub Actions let the docker cloud build the image:
-![GitHub Actions let the docker cloud build the image](pictures/GitHubActionsCItoDockerCloudBuild.png)
-Docker Build Cloud is fast, but it costs to build. They gave me 60 free minutes because I implemented CI from Github Actions, thanks Docker. Build minutes overview:
-![Screenshot of build minutes overview](pictures/DockerBuildCloudMinutes.png)
+GitHub Actions let the docker cloud build the image:  
+![GitHub Actions let the docker cloud build the image](pictures/GitHubActionsCItoDockerCloudBuild.png)  
+Docker Build Cloud is fast, but it costs to build. They gave me 60 free minutes because I implemented CI from Github Actions, thanks Docker. Build minutes overview:  
+![Screenshot of build minutes overview](pictures/DockerBuildCloudMinutes.png)  
 As a result, the image was available on Docker Hub:
-[Docker Hub Images](DockerHubImages.png)
+![Docker Hub Images](DockerHubImages.png)  
 To make the REST API endpoints available in the virtual machine, Docker was installed on the virtual machine and the docker-user was created like in [lab 5.1](https://github.com/warestack/cc/blob/master/Class-5/Lab5.1%20Introduction%20to%20Docker.md). [Video of lab 5.1](https://github.com/warestack/cc/blob/master/Class-5/Lab5.1%20Introduction%20to%20Docker.md)
-The docker-user was logged in on docker hub using the PAT method from above. Then the docker container was started with port mapping like shown in lab 5.1. Because the image was only in the docker cloud, it was automatically pulled before the container was started:
-![Screenshot of running the container in the virtual machine](pictures/RunContainerFromDockerHub.png)
+The docker-user was logged in on docker hub using the PAT method from above. Then the docker container was started with port mapping like shown in lab 5.1. Because the image was only in the docker cloud, it was automatically pulled before the container was started:  
+![Screenshot of running the container in the virtual machine](pictures/RunContainerFromDockerHub.png)  
 Once the container was up and running, the endpoints were available under the virtual machine IP address. The following screenshots show the Home page, post list endpoint, topic detail, topic list and user profile endpoints:
 
-![Home page availabe under the virtual machine IP address](pictures/HomeDeployedContainer.png)
-![Post  endpoint availabe under the virtual machine IP address](pictures/PostEndpointDeployedConatiner.png)
-![Topic detail endpoint availabe under the virtual machine IP address](pictures/TopicDetailDeployedContainer.png)
-![Topic list endpoint availabe under the virtual machine IP address](pictures/TopicListDeployedContainer.png)
+![Home page availabe under the virtual machine IP address](pictures/HomeDeployedContainer.png)  
+![Post  endpoint availabe under the virtual machine IP address](pictures/PostEndpointDeployedConatiner.png)  
+![Topic detail endpoint availabe under the virtual machine IP address](pictures/TopicDetailDeployedContainer.png)  
+![Topic list endpoint availabe under the virtual machine IP address](pictures/TopicListDeployedContainer.png)  
 ![User profile endpoint availabe under the virtual machine IP address](pictures/UserProfileDeployedContainer.png)
 
 ## Phase B
@@ -64,9 +64,9 @@ The main function currently only connects to the database using the `connect` fu
 
 ### Register a user
 
-When a user posts to the `user/register` endpoint, route will forward to the corresponding controller. That controller uses a validation funciton to make sure that the input makes sense and is secure. The validation function is built with the `string, required, min, max` and `email` functions from the `joi` library.
+When a user posts to the `user/register` endpoint, route will forward to the corresponding controller. That controller uses a validation function to make sure that the input makes sense and is secure. The validation function is built with the `string, required, min, max` and `email` functions from the `joi` library.
 
-> **IDEA:** For this purpose, the funcitons were used in a simple way, but the [joi api reference](https://joi.dev/api/?v=17.13.3#stringemailoptions) documents ways how this could be improved.
+> **IDEA:** For this purpose, the functions were used in a simple way, but the [joi api reference](https://joi.dev/api/?v=17.13.3#stringemailoptions) documents ways how this could be improved.
 
 Using the `bcryptjs` library, the password is hashed and 5 rounds of salt are used before it gets stored in the database.
 
@@ -82,7 +82,7 @@ The `jsonwebtoken` library creates that token using a secret variable from the .
 
 ### Interact with an endpoint that requires authentication
 
-To keep the repository clean and organised, a middleware folder is used like suggested by [this turorial.](https://dev.to/taiwo17/nodejs-authentication-and-authorization-with-jwt-building-a-secure-web-application-236f#set-up-file-structure) The routes that require use the `isAuthenticated` middleware funciton to make sure that the user is logged in and allowed to proceed. Logged in means that the request headers contain a key value pair of a key containing `auth-token` and a value containing the json web token.If the user is not logged in, or has a wrong json web token, `isAuthenticated` will send the corresponding response instead of letting the route forwarding the request to the controller.
+To keep the repository clean and organised, a middleware folder is used like suggested by [this turorial.](https://dev.to/taiwo17/nodejs-authentication-and-authorization-with-jwt-building-a-secure-web-application-236f#set-up-file-structure) The routes that require use the `isAuthenticated` middleware function to make sure that the user is logged in and allowed to proceed. Logged in means that the request headers contain a key value pair of a key containing `auth-token` and a value containing the json web token.If the user is not logged in, or has a wrong json web token, `isAuthenticated` will send the corresponding response instead of letting the route forwarding the request to the controller.
 
 ## Phase C
 
@@ -92,11 +92,15 @@ The Models are created so that they are practical to use in this small project.
 
 As Joe Karlsson from mongodb explains in [this video,](https://www.youtube.com/watch?v=QAqK-R9HUhc) it is a good idea to think about what will be displayed when designing the database schema. I tied to follow this advice, but also, I did try not to over optimise as if this app was serving millions of users already.
 
-There are 3 Models:
+There are 3 Models:  
+![UML diagram about models](pictures/ModelsUML.svg)
+The above diagram follows the style of [the Mozilla tutorial](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/mongoose#designing_the_locallibrary_models) that also uses mongoose. This means that the multiplicities are represented by the numbers on the diagram. The maximum and minimum of each model that may be present in the relationship are at the corresponding end of the connection line. An asterisk (\*) means that there is theoretically no maximum. Practically, as mentioned above, my implementation can reach the 16MB document limit of MongoDB.
+
+`Users` can create zero or many `Posts`, `Comments`, `Likes`, and `Dislikes`. Each `Post` and each `Comment` have one `User` as author. `Likes` and `Dislikes` are arrays that can have zero or many `Users` listed. Each `Post` must have at least one `Topic`, but a `Topic` has zero or many `Posts`.
 
 #### Post
 
-![Screenshot of the DB entry](pictures/PostModel.png)
+![Screenshot of the DB entry](pictures/PostModel.png)  
 The comments are and array of documents in the post documents for now. This is how it will be displayed.
 
 Reactions and comments conatain the link to the user like this: `likes: [{ type: Schema.Types.ObjectId, ref: "users" }],`
@@ -105,14 +109,14 @@ Reactions and comments conatain the link to the user like this: `likes: [{ type:
 
 #### Topic
 
-![Screenshot of the DB entry](pictures/TopicModel.png)
+![Screenshot of the DB entry](pictures/TopicModel.png)  
 The topic is simple, it just contains a title and an array of posts. However, currently I don't use that array. If I display the posts of a topic, I use the post list controller and filter fo the topic id.
 
-> **IDEA:** The likes and dislikes are arrays of userIds. This can be displayed as number in the frontend. The user can then click/hover on these reaction numbers to see who reacted. Also, the creation date could be made human readable like the time to expiration in the `showIfActive` funciton.
+> **IDEA:** The likes and dislikes are arrays of userIds. This can be displayed as number in the frontend. The user can then click/hover on these reaction numbers to see who reacted. Also, the creation date could be made human readable like the time to expiration in the `showIfActive` function.
 
 #### User
 
-![Screenshot of the DB entry](pictures/UserModel.png)
+![Screenshot of the DB entry](pictures/UserModel.png)  
 The username is not unique, so there could be more than one user with the same name, but for linking, the user ID is stored. Like this, buttons like `reply in direct message` or so, will still work.
 
 ### Reactions and comments
@@ -281,10 +285,10 @@ spec:
 
 The simple steps are explained one by one in [this article](https://spacelift.io/blog/kubernetes-deployment-yaml). Interesting is the `imagePullPolicy`: [Here](https://kubernetes.io/docs/concepts/containers/images/) the kubernetes docs explain what is going on. We have set it so `Always`, which means that everytime a new container is launched, kubernetes checks, if there is a new image in the docker registry. If there is a new one, it pulls it to the virtual machine. But if the one in the cache is the exactly same already, it does not pull the image because it can use the cache.
 
-To start the replicas, we tell `kubectl` to apply the file.
+To start the replicas, we tell `kubectl` to apply the file.  
 ![Kubernetes start of replicas.](pictures/StartReplicas.png)
 
-To make sure that they are alive, we tell it to get the pods.
+To make sure that they are alive, we tell it to get the pods.  
 ![Kubernetes get pods.](pictures/GetPods.png)
 
 > **IDEA:** To make the setup easier, it would be a good idea to put the secrets into the [secret-manager](https://cloud.google.com/security/products/secret-manager) and then they could be accessed from terraform. Then, it is no longer neccesary to manually start the pods with `kubectl`.
@@ -314,4 +318,4 @@ spec:
 
 ![Kubernetes start loadbalancer service.](pictures/DefineAndStartService.png)
 
-[The docs](https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer) explain that kubernetes does not have a load balancer, but by setting the `type` of this service to `Loadbalancer`, we will use the google cloud default load balancer.
+[The docs](https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer) explain that kubernetes does not have a load balancer, but by setting the `type` of this service to `Loadbalancer`, we will use the google cloud default load balancer. We set `sessionAffinity` to `None` because it does not matter if the request of the client is always passed to the same pod.
