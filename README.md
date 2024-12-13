@@ -94,7 +94,8 @@ As Joe Karlsson from mongodb explains in [this video,](https://www.youtube.com/w
 
 There are 3 Models:  
 ![UML diagram about models](pictures/ModelsUML.svg)
-The above diagram follows the style of [the Mozilla tutorial](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/mongoose#designing_the_locallibrary_models) that also uses mongoose.
+The above diagram follows the style of [the Mozilla tutorial](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/mongoose#designing_the_locallibrary_models) that also uses mongoose. This means that the multiplicities are represented by the numbers on the diagram. The maximum and minimum of each model that may be present in the relationship are at the corresponding end of the connection line. An asterisk (\*) means that there is theoretically no maximum. Practically, as mentioned above, my implementation can reach the 16MB document limit of MongoDB.
+
 `Users` can create zero or many `Posts`, `Comments`, `Likes`, and `Dislikes`. Each `Post` and each `Comment` have one `User` as author. `Likes` and `Dislikes` are arrays that can have zero or many `Users` listed. Each `Post` must have at least one `Topic`, but a `Topic` has zero or many `Posts`.
 
 #### Post
