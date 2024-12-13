@@ -8,7 +8,16 @@ This is a courswork project for the Cloud Computing module at Birkbeck, Universi
 ### Getting started
 
 Install node and yarn or npm on your computer.
-Create a .env file and populate it with the database connector string that you can retrieve from mongodb.
+Create a .env file and populate it with the database connector string that you can retrieve from Mongodb Atlas and with a secret string for the JWT functionality:
+
+```
+MONGODB_URI=<DB connector string>
+JWT_SECRET=<Some random string>
+```
+
+The Topic documents have to be created manually, the rest can be created via the API. Run `yarn dev` or `npm run dev` to start the development server. The entry point for the application is the app.js file. After starting, the app tries to connect to the database and should log `[nodemon] starting `node app.js`
+Connecting to DB
+Connected to DB`.
 
 ## Setup
 
