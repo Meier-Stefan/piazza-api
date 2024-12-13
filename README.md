@@ -25,7 +25,7 @@ The Api is a Node.js application that uses the Express framework. The docker con
 ### App Directory Structure
 
 All the logic is in the `App` directory. This helps to create a more maintainable and scalable structure for the app. As suggested in [this article](https://dev.to/mr_ali3n/folder-structure-for-nodejs-expressjs-project-435l) the directory is called `App` and instead of `Src` because the files run on the server and will not be compiled, transpiled, and minified to be sent to the client.
-The routes forward the request to their corresponding controllers, which will then send the response. This is a good practise shown in the [Mozilla Express Tutorial](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/routes#overview)
+The routes forward the request to their corresponding controllers, which will then send the response. This is a good practice shown in the [Mozilla Express Tutorial](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/routes#overview)
 Adding the `App` directory as 'imports' alias in the `package.json`, makes it easy to import functions from the right place.  
 ![app directory structure](pictures/AppDirectoryStructure.svg)
 
@@ -64,9 +64,9 @@ The main function currently only connects to the database using the `connect` fu
 
 ### Register a user
 
-When a user posts to the `user/register` endpoint, route will forward to the corresponding controller. That controller uses a validation funciton to make sure that the input makes sense and is secure. The validation function is built with the `string, required, min, max` and `email` functions from the `joi` library.
+When a user posts to the `user/register` endpoint, route will forward to the corresponding controller. That controller uses a validation function to make sure that the input makes sense and is secure. The validation function is built with the `string, required, min, max` and `email` functions from the `joi` library.
 
-> **IDEA:** For this purpose, the funcitons were used in a simple way, but the [joi api reference](https://joi.dev/api/?v=17.13.3#stringemailoptions) documents ways how this could be improved.
+> **IDEA:** For this purpose, the functions were used in a simple way, but the [joi api reference](https://joi.dev/api/?v=17.13.3#stringemailoptions) documents ways how this could be improved.
 
 Using the `bcryptjs` library, the password is hashed and 5 rounds of salt are used before it gets stored in the database.
 
@@ -82,7 +82,7 @@ The `jsonwebtoken` library creates that token using a secret variable from the .
 
 ### Interact with an endpoint that requires authentication
 
-To keep the repository clean and organised, a middleware folder is used like suggested by [this turorial.](https://dev.to/taiwo17/nodejs-authentication-and-authorization-with-jwt-building-a-secure-web-application-236f#set-up-file-structure) The routes that require use the `isAuthenticated` middleware funciton to make sure that the user is logged in and allowed to proceed. Logged in means that the request headers contain a key value pair of a key containing `auth-token` and a value containing the json web token.If the user is not logged in, or has a wrong json web token, `isAuthenticated` will send the corresponding response instead of letting the route forwarding the request to the controller.
+To keep the repository clean and organised, a middleware folder is used like suggested by [this turorial.](https://dev.to/taiwo17/nodejs-authentication-and-authorization-with-jwt-building-a-secure-web-application-236f#set-up-file-structure) The routes that require use the `isAuthenticated` middleware function to make sure that the user is logged in and allowed to proceed. Logged in means that the request headers contain a key value pair of a key containing `auth-token` and a value containing the json web token.If the user is not logged in, or has a wrong json web token, `isAuthenticated` will send the corresponding response instead of letting the route forwarding the request to the controller.
 
 ## Phase C
 
@@ -94,7 +94,7 @@ As Joe Karlsson from mongodb explains in [this video,](https://www.youtube.com/w
 
 There are 3 Models:  
 ![UML diagram about models](pictures/ModelsUML.svg)
-The above diagram follows the style of t[he mozilla tutorial](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/mongoose#designing_the_locallibrary_models) that also uses mongoose.
+The above diagram follows the style of [the Mozilla tutorial](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/mongoose#designing_the_locallibrary_models) that also uses mongoose.
 `Users` can create zero or many `Posts`, `Comments`, `Likes`, and `Dislikes`. Each `Post` and each `Comment` have one `User` as author. `Likes` and `Dislikes` are arrays that can have zero or many `Users` listed. Each `Post` must have at least one `Topic`, but a `Topic` has zero or many `Posts`.
 
 #### Post
@@ -111,7 +111,7 @@ Reactions and comments conatain the link to the user like this: `likes: [{ type:
 ![Screenshot of the DB entry](pictures/TopicModel.png)  
 The topic is simple, it just contains a title and an array of posts. However, currently I don't use that array. If I display the posts of a topic, I use the post list controller and filter fo the topic id.
 
-> **IDEA:** The likes and dislikes are arrays of userIds. This can be displayed as number in the frontend. The user can then click/hover on these reaction numbers to see who reacted. Also, the creation date could be made human readable like the time to expiration in the `showIfActive` funciton.
+> **IDEA:** The likes and dislikes are arrays of userIds. This can be displayed as number in the frontend. The user can then click/hover on these reaction numbers to see who reacted. Also, the creation date could be made human readable like the time to expiration in the `showIfActive` function.
 
 #### User
 
